@@ -1,33 +1,29 @@
 name: YuPball
 main: com.myxcoding.yupie_123.YuPball
+author: MyxCoding
 version: 1.0
 description: >
              A plugin created for yupie_123 by MyxCoding Limited.
+softdepend: [Nametag]
+depend: [TagAPI]
+website: http://www.myxgaming.com/
+
 commands:
-  red:
-    description: Adds you to the red team!
-    usage: /red
-  blue:
-    description: Adds you to the blue team!!
-    usage: /blue
   warn:
-    description: Warns a player and adds to their infractions! Once they reach five infractions they shall be banned!
-    usage: /warn <player_name>
-  points:
-    description: Shows you your points!
-    usage: /points [Player]
-  yb:
-    description: The base command for the plugin
-    usage: /yb
-  pl:
-    description: Alias for YB 
-    usage: /pl
-  plugins:
-    description: Alias for YB
-    usage: /plugins
+    description: Warns a player
   staff:
-    description: Dispays the servers staff and the staff currently online!
-    usage: /staff
+    description: Displays staff online
+  points:
+    description: Displays your points
   shop:
-    description: Displays the shop!
-    usage: /shop
+    description: Displays the shop
+  yb:
+    description: Displays Information about the plugin
+  join:
+    description: Displays Information about the plugin
+  leave:
+    description: Displays Information about the plugin
+  stats:
+    description: Displays Information about the plugin
+  set:
+    description: Allows you to set the Lobby position and the Spectator position
