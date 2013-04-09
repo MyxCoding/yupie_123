@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -549,27 +550,25 @@ public class YuPball extends JavaPlugin implements Listener {
 					+ ChatColor.GREEN + "2" + ChatColor.DARK_RED
 					+ " lives left!");
 			event.setDeathMessage(ChatColor.BLUE + player.getName()
+					+ ChatColor.RED + " was hit by " + ChatColor.GREEN
+					+ killer.getName());
+		} else if (this.getConfig().getInt(
+				"Data.Stats." + player.getName() + ".DeathsThisRound") == 2) {
+			player.sendMessage(message + ChatColor.DARK_RED + "You have "
+					+ ChatColor.GREEN + "1" + ChatColor.DARK_RED
+					+ " life left!");
+			event.setDeathMessage(ChatColor.BLUE + player.getName()
+					+ ChatColor.RED + " was hit by " + ChatColor.GREEN
+					+ killer.getName());
+		} else if (this.getConfig().getInt(
+				"Data.Stats." + player.getName() + ".DeathsThisRound") == 3) {
+			player.sendMessage(message + ChatColor.DARK_RED + "You have "
+					+ ChatColor.GREEN + "0" + ChatColor.DARK_RED
+					+ " lives left!");
+			event.setDeathMessage(ChatColor.BLUE + player.getName()
 					+ ChatColor.RED + " was killed by " + ChatColor.GREEN
 					+ killer.getName());
 		}
-		/*
-		 * if (deaths.containsKey(player.getName())) { if
-		 * (deaths.get(player.getName()) == 1) {
-		 * player.sendMessage(ChatColor.RED + "You have" + ChatColor.GREEN + "2"
-		 * + ChatColor.RED + " lives left!");
-		 * event.setDeathMessage(ChatColor.BLUE + player.getName() +
-		 * ChatColor.RED + " was killed by " + ChatColor.GREEN + killer); } else
-		 * if (deaths.get(player.getName()) == 2) {
-		 * player.sendMessage(ChatColor.RED + "You have" + ChatColor.GREEN + "1"
-		 * + ChatColor.RED + " life left!");
-		 * event.setDeathMessage(ChatColor.BLUE + player.getName() +
-		 * ChatColor.RED + " was killed by " + ChatColor.GREEN + killer); } else
-		 * if (deaths.get(player.getName()) == 3) {
-		 * player.sendMessage(ChatColor.RED + "You have" + ChatColor.GREEN + "0"
-		 * + ChatColor.RED + " lives left!");
-		 * event.setDeathMessage(ChatColor.BLUE + player.getName() +
-		 * ChatColor.RED + " was killed by " + ChatColor.GREEN + killer); } }
-		 */
 	}
 
 	@EventHandler
@@ -588,11 +587,38 @@ public class YuPball extends JavaPlugin implements Listener {
 		}
 	}
 
+	@SuppressWarnings("null")
 	@EventHandler
 	public void playerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
 		if (this.getConfig().getInt(
-				"Data.Stats." + player.getName() + ".DeathsThisRound") == 1) {
+				"Data.Stats." + player.getName() + ".DeathsThisRound") == 1
+				|| this.getConfig().getInt(
+						"Data.Stats." + player.getName() + ".DeathsThisRound") == 2) {
+			int SpecX = this.getConfig().getInt("Arena.Spectate.Location.X");
+			int SpecY = this.getConfig().getInt("Arena.Spectate.Location.Y");
+			int SpecZ = this.getConfig().getInt("Arena.Spectate.Location.Z");
+			Location Spectate = null;
+			Spectate.setX(SpecX);
+			Spectate.setY(SpecY);
+			Spectate.setZ(SpecZ);
+			player.teleport(Spectate);
+			player.sendMessage(message + ChatColor.GOLD
+					+ "You were teleported to the spectator area!");
+		} else if (this.getConfig().getInt(
+				"Data.Stats." + player.getName() + ".DeathsThisRound") == 3) {
+			int LobbyX = this.getConfig().getInt("Arena.Lobby.Location.X");
+			int LobbyY = this.getConfig().getInt("Arena.Lobby.Location.Y");
+			int LobbyZ = this.getConfig().getInt("Arena.Lobby.Location.Z");
+			Location Lobby = null;
+			Lobby.setX(LobbyX);
+			Lobby.setY(LobbyY);
+			Lobby.setZ(LobbyZ);
+			player.teleport(Lobby);
+			player.sendMessage(message + ChatColor.GOLD
+					+ "You were teleported to the Lobby area!");
+			this.getConfig().set(
+					"Data.Stats." + player.getName() + ".DeathsThisRound", 0);
 		}
 	}
 
